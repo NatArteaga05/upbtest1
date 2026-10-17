@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tu inventario
 
-## Getting Started
+Frontend de gestión de productos con Next.js, conectado a una API Express y PostgreSQL.
 
-First, run the development server:
+## Ejecutar localmente
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. Instala las dependencias: `npm ci`.
+2. Copia `.env.example` a `.env` y configura `NEXT_PUBLIC_API_URL` con la URL del backend, sin `/api/productos`.
+3. Ejecuta `npm run dev` y abre http://localhost:3000.
+
+```env
+NEXT_PUBLIC_API_URL=https://backendupbtest-zgc9.onrender.com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Esta variable es pública. No añadas contraseñas ni credenciales de PostgreSQL al frontend. Reinicia el servidor de desarrollo después de cambiarla.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Listado y búsqueda local por nombre o ID: `GET /api/productos`.
+- Consulta de detalle y carga para edición: `GET /api/productos/:id`.
+- Creación: `POST /api/productos`.
+- Edición: `PUT /api/productos/:id`.
+- Eliminación con confirmación: `DELETE /api/productos/:id`.
+- Validación, indicadores de carga y mensajes de error/éxito.
 
-## Learn More
+Los datos se guardan en el backend, no en el almacenamiento del navegador. Si una operación agota el tiempo de espera, actualiza la lista antes de repetirla: podría haberse completado en el servidor.
 
-To learn more about Next.js, take a look at the following resources:
+## Validar y publicar
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `npm run lint`: revisión de código.
+- `npm test`: pruebas del cliente de la API con respuestas simuladas, sin modificar datos reales.
+- `npm run build`: compilación y exportación estática a `out/`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Los workflows de GitHub Actions compilan y publican en Firebase Hosting. Ambos definen `NEXT_PUBLIC_API_URL` durante la compilación, porque el `.env` local no se sube a Git. Si cambia la URL del backend, actualízala también en esos workflows y vuelve a compilar/publicar.
 
-## Deploy on Vercel
+- Frontend previsto: https://upbtest1-23de0.web.app
+- Backend: https://backendupbtest-zgc9.onrender.com
+- Repositorio backend: https://github.com/NatArteaga05/backendUpbtest
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+El backend debe permitir el origen del frontend mediante CORS. Esta interfaz no implementa autenticación; la API actual permite operaciones públicas sobre los productos.

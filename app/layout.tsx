@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tu espacio | Un buen comienzo",
-  description: "Un espacio para presentar tu idea y dar el siguiente paso.",
+  title: "Tu inventario | Gestión de productos",
+  description: "Consulta, crea y administra tus productos y existencias.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
